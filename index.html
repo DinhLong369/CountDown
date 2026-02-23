@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>🧧Lunar New Year 2026 Countdown </title>
+<title>🧧Lunar New Year 2027 Countdown </title>
 
 <style>
 * {
@@ -114,8 +114,13 @@ h2 { font-weight: 400; margin-bottom: 30px; opacity: 0.8; }
 <canvas id="fireworks"></canvas>
 
 <div class="container" id="mainContent">
-    <h1>🧧 Lunar New Year 2026</h1>
-    <h2>17 February 2026</h2>
+    <div style="margin-bottom: 18px;">
+        <select id="countdownType" style="padding:8px 16px;border-radius:8px;font-size:16px;">
+            <option value="newyear">Lunar New Year 2027</option>
+            <option value="hungvuong">Giỗ tổ Hùng Vương 2026</option>
+        </select>
+    </div>
+    <h1>🧧 Lunar New Year 2027</h1>
 
     <div class="countdown">
         <div class="time-box">
@@ -136,17 +141,30 @@ h2 { font-weight: 400; margin-bottom: 30px; opacity: 0.8; }
         </div>
     </div>
 
-    <button class="pip-btn" onclick="openPiP()">Pin (Picture-in-Picture)</button>
-
-    <div class="footer">
-        Countdown to Lunar New Year 2026 🧧
-    </div>
+    <button class="pip-btn" onclick="openPiP()">PiP (Picture-in-Picture)</button>
 </div>
 
 
 <script>
 /* COUNTDOWN */
-const targetDate = new Date("2026-02-17T00:00:00").getTime();
+let targetDate = new Date("2027-02-17T00:00:00").getTime();
+let countdownTitle = "🧧 Lunar New Year 2027";
+
+const hungVuongDate = new Date("2026-04-18T00:00:00").getTime(); // Giỗ tổ Hùng Vương 2026
+
+document.getElementById('countdownType').addEventListener('change', function() {
+    if (this.value === 'newyear') {
+        targetDate = new Date("2027-02-17T00:00:00").getTime();
+        countdownTitle = "🧧 Lunar New Year 2027";
+    } else if (this.value === 'hungvuong') {
+        targetDate = hungVuongDate;
+        countdownTitle = "Giỗ tổ Hùng Vương 2026";
+    }
+    document.querySelector(".container h1").innerText = countdownTitle;
+    document.querySelector(".container h2").innerText = countdownDateText;
+    document.querySelector(".footer").innerText = `Countdown to ${countdownTitle}`;
+    updateCountdown();
+});
 
 function updateCountdown() {
     const now = new Date().getTime();
@@ -225,6 +243,17 @@ async function openPiP() {
         return;
     }
 
+    // Lấy loại countdown hiện tại
+    const countdownType = document.getElementById('countdownType').value;
+    let pipTargetDate, pipTitle;
+    if (countdownType === 'newyear') {
+        pipTargetDate = new Date("2027-02-17T00:00:00").getTime();
+        pipTitle = "Lunar New Year 2027";
+    } else {
+        pipTargetDate = new Date("2026-04-18T00:00:00").getTime();
+        pipTitle = "Giỗ tổ Hùng Vương 2026";
+    }
+
     const pipWindow = await documentPictureInPicture.requestWindow({
         width: 360,
         height: 300 // tăng chiều cao
@@ -234,7 +263,6 @@ async function openPiP() {
 
     doc.body.style.margin = "0";
     doc.body.style.fontFamily = "Segoe UI, sans-serif";
-    // Dùng gradient nền rực rỡ, hiện đại, không đổi khi resize
     doc.body.style.background = 'linear-gradient(135deg, #ffb347 0%, #ff0844 100%)';
     doc.body.style.display = "flex";
     doc.body.style.alignItems = "center";
@@ -257,7 +285,6 @@ async function openPiP() {
     function resizeFWCanvas() {
         fwCanvas.width = doc.documentElement.clientWidth;
         fwCanvas.height = doc.documentElement.clientHeight;
-        // Đảm bảo màu nền PiP luôn là gradient đẹp
         doc.body.style.background = 'linear-gradient(135deg, #ffb347 0%, #ff0844 100%)';
     }
     resizeFWCanvas();
@@ -333,7 +360,7 @@ async function openPiP() {
             margin-bottom:18px;
             letter-spacing:1px;
         ">
-            Lunar New Year 2026
+            ${pipTitle}
         </div>
         <div id="pipTimer" style="
             display:flex;
@@ -347,12 +374,12 @@ async function openPiP() {
 
     function updatePiP() {
         const now = new Date().getTime();
-        const diff = targetDate - now;
+        const diff = pipTargetDate - now;
         const timer = doc.getElementById("pipTimer");
         if (diff <= 0) {
             timer.innerHTML = `
                 <div style="font-size:26px;font-weight:bold;letter-spacing:1px;">
-                    🎉 Happy New Year 🎉
+                    🎉 Đã đến ngày ${pipTitle}! 🎉
                 </div>
             `;
             return;
