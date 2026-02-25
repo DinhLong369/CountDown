@@ -315,11 +315,12 @@
   <script>
     function getNextWorkEndTime() {
       const now = new Date();
-      const workEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 45, 0);
-      if (now >= workEnd) {
-        workEnd.setDate(workEnd.getDate() + 1);
+      const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0, 0);
+      const end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 45, 0);
+      if (now < start || now >= end) {
+        return null; // Không đếm ngược ngoài khoảng
       }
-      return workEnd;
+      return end;
     }
 
     const events = [
@@ -356,8 +357,13 @@
 
     function tick() {
       const ev = events[current];
-      const target = ev.isDynamic ? ev.getTarget() : ev.target;
-      const c = calc(target);
+      let target = ev.isDynamic ? ev.getTarget() : ev.target;
+      let c;
+      if (ev.isDynamic && !target) {
+        c = { d: 0, h: 0, m: 0, s: 0 };
+      } else {
+        c = calc(target);
+      }
       updateUnit('cd', c.d); updateUnit('ch', c.h);
       updateUnit('cm', c.m); updateUnit('cs', c.s);
     }
