@@ -1,397 +1,462 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Countdown</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Countdown</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  :root {
-    --gold: #e8c98a;
-    --gold-light: #f5dea3;
-    --bg: #0d0b08;
-    --surface: #141210;
-    --text: #fffbf0;
-    --muted: #a89968;
-    --border: rgba(232,201,138,0.25);
-  }
+    :root {
+      --gold: #e8c98a;
+      --gold-light: #f7d684;
+      --bg: #0d0b08;
+      --surface: #141210;
+      --text: #fffbf0;
+      --muted: #a89968;
+      --border: rgba(232, 201, 138, 0.25);
+    }
 
-  [data-theme="tet"] {
-    --gold: #e8c98a;
-    --gold-light: #ffd700;
-    --bg: #f9f4ed;
-    --surface: #8b3a3a;
-    --text: #fffbf0;
-    --muted: #d97070;
-    --border: rgba(200,58,58,0.25);
-  }
+    [data-theme="tet"] {
+      --gold: #ecc26e;
+      --gold-light: #ffd700;
+      --bg: #e2dfda;
+      --surface: #8b3a3a;
+      --text: #b49745;
+      --muted: #d97070;
+      --border: rgba(200, 58, 58, 0.25);
+    }
 
-  body {
-    background: var(--bg);
-    font-family: 'Space Mono', monospace;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    gap: 14px;
-    padding: 20px;
-  }
+    body {
+      background: var(--bg);
+      font-family: 'Space Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      gap: 14px;
+      padding: 20px;
+    }
 
-  /* ── Selector tabs ── */
-  .selector {
-    display: flex;
-    gap: 6px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 4px;
-  }
+    /* ── Selector tabs ── */
+    .selector {
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 4px;
+    }
 
-  .tab {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 8px 18px;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    white-space: nowrap;
-    border: 1px solid transparent;
-    user-select: none;
-    font-weight: 600;
-  }
+    .tab {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 8px 18px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      white-space: nowrap;
+      border: 1px solid transparent;
+      user-select: none;
+      font-weight: 600;
+    }
 
-  .tab:hover { color: var(--gold-light); }
+    .tab:hover {
+      color: var(--gold-light);
+    }
 
-  .pip-btn {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 14px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--gold);
-    padding: 8px 18px;
-    border: 1px solid var(--border);
-    background: transparent;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    user-select: none;
-  }
-  
-  .pip-btn:hover {
-    color: var(--gold-light);
-    border-color: rgba(200,169,110,0.4);
-    background: rgba(200,169,110,0.08);
-  }
-  .pip {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px 44px;
-    display: flex;
-    align-items: center;
-    gap: 28px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(200,169,110,0.08);
-    min-width: 540px;
-  }
+    .pip-btn {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      background: transparent;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      user-select: none;
+    }
 
-  .pip::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    opacity: 0.6;
-  }
+    .pip-btn:hover {
+      color: var(--gold-light);
+      border-color: rgba(200, 169, 110, 0.4);
+      background: rgba(200, 169, 110, 0.08);
+    }
 
-  .event-label {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 16px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    white-space: nowrap;
-    line-height: 1.5;
-    min-width: 120px;
-    opacity: 0;
-    transform: translateY(5px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    font-weight: 600;
-  }
+    .pip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 44px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(200, 169, 110, 0.08);
+      min-width: 540px;
+    }
 
-  .event-label.visible { opacity: 1; transform: translateY(0); }
+    .pip::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.6;
+    }
 
-  .event-label span {
-    display: block;
-    color: var(--gold);
-    font-size: 12px;
-    letter-spacing: 0.18em;
-    margin-bottom: 6px;
-    font-family: 'Space Mono', monospace;
-  }
+    .event-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      line-height: 1.5;
+      min-width: 120px;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      font-weight: 600;
+    }
 
-  .vline {
-    width: 1px;
-    height: 60px;
-    background: var(--border);
-    flex-shrink: 0;
-  }
+    .event-label.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-  .countdown {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    opacity: 0;
-    transform: translateY(5px);
-    transition: opacity 0.3s ease 0.06s, transform 0.3s ease 0.06s;
-  }
+    .event-label span {
+      display: block;
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      margin-bottom: 6px;
+      font-family: 'Space Mono', monospace;
+    }
 
-  .countdown.visible { opacity: 1; transform: translateY(0); }
+    .vline {
+      width: 1px;
+      height: 60px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
 
-  .unit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-  }
+    .countdown {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.3s ease 0.06s, transform 0.3s ease 0.06s;
+    }
 
-  .unit-value {
-    font-size: 40px;
-    font-weight: 800;
-    color: var(--text);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    min-width: 60px;
-    text-align: center;
-    font-variant-numeric: tabular-nums;
-    transition: color 0.25s;
-  }
+    .countdown.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-  .unit-value.tick { color: var(--gold); }
+    .unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
 
-  .unit-label {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    text-transform: uppercase;
-    font-weight: 700;
-  }
+    .unit-value {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      min-width: 60px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      transition: color 0.25s;
+    }
 
-  .sep {
-    font-size: 28px;
-    color: var(--muted);
-    padding: 0 2px;
-    margin-bottom: 18px;
-    opacity: 0.35;
-    animation: blink 1s step-end infinite;
-  }
+    .unit-value.tick {
+      color: var(--gold);
+    }
 
-  @keyframes blink {
-    0%, 100% { opacity: 0.35; }
-    50% { opacity: 0.1; }
-  }
+    .unit-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
 
-  /* ── Theme Selector ── */
-  .theme-selector {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
-  }
+    .sep {
+      font-size: 28px;
+      color: var(--muted);
+      padding: 0 2px;
+      margin-bottom: 18px;
+      opacity: 0.35;
+      animation: blink 1s step-end infinite;
+    }
 
-  .theme-btn {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 6px 14px;
-    border: 1px solid var(--border);
-    background: transparent;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    user-select: none;
-  }
+    @keyframes blink {
 
-  .theme-btn:hover { color: var(--gold-light); }
+      0%,
+      100% {
+        opacity: 0.35;
+      }
 
-  .theme-btn.active {
-    color: var(--gold);
-    border-color: var(--gold);
-    background: rgba(232,201,138,0.1);
-  }
-</style>
+      50% {
+        opacity: 0.1;
+      }
+    }
+
+    /* ── Theme Selector ── */
+    .theme-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .theme-btn {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 12px;
+      font-weight: 1200;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      background: transparent;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      user-select: none;
+    }
+
+    .theme-btn:hover {
+      color: var(--gold-light);
+    }
+
+
+    .theme-btn.active {
+      color: #a85c00;
+      border-color: var(--gold);
+      background: rgba(232, 201, 138, 0.18);
+      font-weight: 800;
+    }
+
+    [data-theme="tet"] .theme-btn.active {
+      color: #a85c00;
+      background: #fffbe8;
+      border-color: #ffd700;
+      text-shadow: 0 1px 2px #fff8, 0 0 2px #ffd70088;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="theme-selector">
-  <button class="theme-btn active" data-theme="dark-gold">🌙 Đen Vàng</button>
-  <button class="theme-btn" data-theme="tet">🎆 Tết</button>
-</div>
-
-<div class="selector">
-  <div class="tab active" data-idx="0">Giỗ Tổ Hùng Vương</div>
-  <div class="tab" data-idx="1">Tết Nguyên Đán</div>
-  <button class="pip-btn" id="pip-btn">📺 PiP</button>
-</div>
-
-<div class="pip">
-  <div class="event-label visible" id="label">
-    <span>10/3 ÂL • 2026</span>
-    Giỗ Tổ<br>Hùng Vương
+  <div class="theme-selector">
+    <button class="theme-btn active" data-theme="dark-gold">🌙 Dark Theme</button>
+    <button class="theme-btn" data-theme="tet">🎆 Lunar New Year</button>
   </div>
-  <div class="vline"></div>
-  <div class="countdown visible" id="countdown">
-    <div class="unit"><div class="unit-value" id="cd">00</div><div class="unit-label">ngày</div></div>
-    <div class="sep">:</div>
-    <div class="unit"><div class="unit-value" id="ch">00</div><div class="unit-label">giờ</div></div>
-    <div class="sep">:</div>
-    <div class="unit"><div class="unit-value" id="cm">00</div><div class="unit-label">phút</div></div>
-    <div class="sep">:</div>
-    <div class="unit"><div class="unit-value" id="cs">00</div><div class="unit-label">giây</div></div>
+
+  <div class="selector">
+    <div class="tab active" data-idx="0">Giỗ Tổ Hùng Vương</div>
+    <div class="tab" data-idx="1">Tết Nguyên Đán</div>
+    <div class="tab" data-idx="2">Time Back Home</div>
+    <button class="pip-btn" id="pip-btn">📺 PiP</button>
   </div>
-</div>
 
-<script>
-  const events = [
-    { target: new Date('2026-04-28T00:00:00'), badge: '10/3 ÂL • 2026', name: 'Giỗ Tổ<br>Hùng Vương' },
-    { target: new Date('2027-02-17T00:00:00'), badge: 'TẾT • 2027',      name: 'Năm Mùi<br>Lunar New Year' }
-  ];
+  <div class="pip">
+    <div class="event-label visible" id="label">
+      <span>10/3 ÂL • 2026</span>
+      Giỗ Tổ<br>Hùng Vương
+    </div>
+    <div class="vline"></div>
+    <div class="countdown visible" id="countdown">
+      <div class="unit">
+        <div class="unit-value" id="cd">00</div>
+        <div class="unit-label">ngày</div>
+      </div>
+      <div class="sep">:</div>
+      <div class="unit">
+        <div class="unit-value" id="ch">00</div>
+        <div class="unit-label">giờ</div>
+      </div>
+      <div class="sep">:</div>
+      <div class="unit">
+        <div class="unit-value" id="cm">00</div>
+        <div class="unit-label">phút</div>
+      </div>
+      <div class="sep">:</div>
+      <div class="unit">
+        <div class="unit-value" id="cs">00</div>
+        <div class="unit-label">giây</div>
+      </div>
+    </div>
+  </div>
 
-  let current = 0;
-  const labelEl = document.getElementById('label');
-  const cdEl    = document.getElementById('countdown');
-  const tabs    = document.querySelectorAll('.tab');
-
-  function pad(n) { return String(n).padStart(2, '0'); }
-
-  function updateUnit(id, val) {
-    const el  = document.getElementById(id);
-    const str = pad(val);
-    if (el.textContent !== str) {
-      el.textContent = str;
-      el.classList.remove('tick');
-      void el.offsetWidth;
-      el.classList.add('tick');
-      setTimeout(() => el.classList.remove('tick'), 280);
+  <script>
+    function getNextWorkEndTime() {
+      const now = new Date();
+      const workEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 17, 45, 0);
+      if (now >= workEnd) {
+        workEnd.setDate(workEnd.getDate() + 1);
+      }
+      return workEnd;
     }
-  }
 
-  function calc(target) {
-    const diff = target - Date.now();
-    if (diff <= 0) return { d:0, h:0, m:0, s:0 };
-    const s = Math.floor(diff / 1000);
-    return { d: Math.floor(s/86400), h: Math.floor((s%86400)/3600), m: Math.floor((s%3600)/60), s: s%60 };
-  }
+    const events = [
+      { target: new Date('2026-04-28T00:00:00'), badge: '10/3 ÂL • 2026', name: 'Giỗ Tổ<br>Hùng Vương' },
+      { target: new Date('2027-02-17T00:00:00'), badge: 'TẾT • 2027', name: 'Năm Mùi<br>Lunar New Year' },
+      { isDynamic: true, getTarget: getNextWorkEndTime, badge: 'HÔM NAY • 17:45', name: 'Time <br> Back Home' }
+    ];
 
-  function tick() {
-    const c = calc(events[current].target);
-    updateUnit('cd', c.d); updateUnit('ch', c.h);
-    updateUnit('cm', c.m); updateUnit('cs', c.s);
-  }
+    let current = 0;
+    const labelEl = document.getElementById('label');
+    const cdEl = document.getElementById('countdown');
+    const tabs = document.querySelectorAll('.tab');
 
-  function switchEvent(idx) {
-    if (idx === current) return;
-    current = idx;
+    function pad(n) { return String(n).padStart(2, '0'); }
 
-    labelEl.classList.remove('visible');
-    cdEl.classList.remove('visible');
+    function updateUnit(id, val) {
+      const el = document.getElementById(id);
+      const str = pad(val);
+      if (el.textContent !== str) {
+        el.textContent = str;
+        el.classList.remove('tick');
+        void el.offsetWidth;
+        el.classList.add('tick');
+        setTimeout(() => el.classList.remove('tick'), 280);
+      }
+    }
 
-    setTimeout(() => {
+    function calc(target) {
+      const diff = target - Date.now();
+      if (diff <= 0) return { d: 0, h: 0, m: 0, s: 0 };
+      const s = Math.floor(diff / 1000);
+      return { d: Math.floor(s / 86400), h: Math.floor((s % 86400) / 3600), m: Math.floor((s % 3600) / 60), s: s % 60 };
+    }
+
+    function tick() {
       const ev = events[current];
-      labelEl.innerHTML = `<span>${ev.badge}</span>${ev.name}`;
-      tick();
-      requestAnimationFrame(() => {
-        labelEl.classList.add('visible');
-        cdEl.classList.add('visible');
-      });
-    }, 250);
-
-    tabs.forEach((t, i) => t.classList.toggle('active', i === idx));
-  }
-
-  tabs.forEach(tab => tab.addEventListener('click', () => switchEvent(+tab.dataset.idx)));
-
-  // Theme switching
-  const themeBtns = document.querySelectorAll('.theme-btn');
-  const html = document.documentElement;
-
-  function setTheme(themeName) {
-    if (themeName === 'dark-gold') {
-      html.removeAttribute('data-theme');
-    } else {
-      html.setAttribute('data-theme', themeName);
+      const target = ev.isDynamic ? ev.getTarget() : ev.target;
+      const c = calc(target);
+      updateUnit('cd', c.d); updateUnit('ch', c.h);
+      updateUnit('cm', c.m); updateUnit('cs', c.s);
     }
-    localStorage.setItem('selectedTheme', themeName);
-    themeBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === themeName));
-  }
 
-  themeBtns.forEach(btn => {
-    btn.addEventListener('click', () => setTheme(btn.dataset.theme));
-  });
+    function switchEvent(idx) {
+      if (idx === current) return;
+      current = idx;
 
-  // Load saved theme
-  const savedTheme = localStorage.getItem('selectedTheme') || 'dark-gold';
-  setTheme(savedTheme);
+      labelEl.classList.remove('visible');
+      cdEl.classList.remove('visible');
 
-  // Theme color palettes
-  const themeColors = {
-    'dark-gold': {
-      bg: '#0d0b08',
-      surface: '#141210',
-      text: '#fffbf0',
-      gold: '#e8c98a',
-      goldLight: '#f5dea3',
-      muted: '#a89968',
-      borderColor: 'rgba(232,201,138,0.25)',
-      boxShadowInset: 'rgba(232,201,138,0.12)',
-      shadowMain: 'rgba(0,0,0,0.6)'
-    },
-    'tet': {
-      bg: '#f9f4ed',
-      surface: '#8b3a3a',
-      text: '#fffbf0',
-      gold: '#e8c98a',
-      goldLight: '#ffd700',
-      muted: '#d97070',
-      borderColor: 'rgba(200,58,58,0.25)',
-      boxShadowInset: 'rgba(200,58,58,0.12)',
-      shadowMain: 'rgba(0,0,0,0.4)'
+      setTimeout(() => {
+        const ev = events[current];
+        labelEl.innerHTML = `<span>${ev.badge}</span>${ev.name}`;
+        tick();
+        requestAnimationFrame(() => {
+          labelEl.classList.add('visible');
+          cdEl.classList.add('visible');
+        });
+      }, 250);
+
+      tabs.forEach((t, i) => t.classList.toggle('active', i === idx));
     }
-  };
 
-  function getCurrentThemeColors() {
-    const theme = html.getAttribute('data-theme') || 'dark-gold';
-    return themeColors[theme];
-  }
+    tabs.forEach(tab => tab.addEventListener('click', () => switchEvent(+tab.dataset.idx)));
 
-  // PiP functionality
-  async function openPiP() {
-    if (!("documentPictureInPicture" in window)) {
-      alert("PiP không được hỗ trợ trên trình duyệt này");
-      return;
+    // Theme switching
+    const themeBtns = document.querySelectorAll('.theme-btn');
+    const html = document.documentElement;
+
+    function setTheme(themeName) {
+      if (themeName === 'dark-gold') {
+        html.removeAttribute('data-theme');
+      } else {
+        html.setAttribute('data-theme', themeName);
+      }
+      localStorage.setItem('selectedTheme', themeName);
+      themeBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.theme === themeName));
     }
-    
-    const colors = getCurrentThemeColors();
-    const pipWindow = await documentPictureInPicture.requestWindow({ width: 500, height: 160 });
-    const doc = pipWindow.document;
-    doc.title = '';
-    doc.documentElement.lang = 'vi';
-    
-    // Add styles
-    const link = doc.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap';
-    link.rel = 'stylesheet';
-    doc.head.appendChild(link);
-    
-    doc.body.style.cssText = `
+
+    themeBtns.forEach(btn => {
+      btn.addEventListener('click', () => setTheme(btn.dataset.theme));
+    });
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('selectedTheme') || 'dark-gold';
+    setTheme(savedTheme);
+
+    // Theme color palettes
+    const themeColors = {
+      'dark-gold': {
+        bg: '#0d0b08',
+        surface: '#141210',
+        text: '#fffbf0',
+        gold: '#e8c98a',
+        goldLight: '#f5dea3',
+        muted: '#a89968',
+        borderColor: 'rgba(232,201,138,0.25)',
+        boxShadowInset: 'rgba(232,201,138,0.12)',
+        shadowMain: 'rgba(0,0,0,0.6)'
+      },
+      'tet': {
+        bg: '#f9f4ed',
+        surface: '#8b3a3a',
+        text: '#fffbf0',
+        gold: '#e8c98a',
+        goldLight: '#ffd700',
+        muted: '#d97070',
+        borderColor: 'rgba(200,58,58,0.25)',
+        boxShadowInset: 'rgba(200,58,58,0.12)',
+        shadowMain: 'rgba(0,0,0,0.4)'
+      }
+    };
+
+    function getCurrentThemeColors() {
+      const theme = html.getAttribute('data-theme') || 'dark-gold';
+      return themeColors[theme];
+    }
+
+    // PiP functionality
+    async function openPiP() {
+      if (!("documentPictureInPicture" in window)) {
+        alert("PiP không được hỗ trợ trên trình duyệt này");
+        return;
+      }
+
+      const colors = getCurrentThemeColors();
+      const pipWindow = await documentPictureInPicture.requestWindow({ width: 500, height: 160 });
+      const doc = pipWindow.document;
+      doc.title = '';
+      doc.documentElement.lang = 'vi';
+
+      // Add styles
+      const link = doc.createElement('link');
+      link.href = 'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Space+Mono:wght@400;700&display=swap';
+      link.rel = 'stylesheet';
+      doc.head.appendChild(link);
+
+      doc.body.style.cssText = `
       margin: 0;
       padding: 0;
       background: ${colors.bg};
@@ -402,10 +467,10 @@
       overflow: hidden;
       font-family: 'Space Mono', monospace;
     `;
-    
-    // Create pip card
-    const pipCard = doc.createElement('div');
-    pipCard.style.cssText = `
+
+      // Create pip card
+      const pipCard = doc.createElement('div');
+      pipCard.style.cssText = `
       background: ${colors.surface};
       border: 1px solid ${colors.borderColor};
       border-radius: 16px;
@@ -418,22 +483,22 @@
       box-shadow: 0 8px 40px ${colors.shadowMain}, inset 0 1px 0 ${colors.boxShadowInset};
       width: 90%;
     `;
-    
-    // Top border
-    const border = doc.createElement('div');
-    border.style.cssText = `
+
+      // Top border
+      const border = doc.createElement('div');
+      border.style.cssText = `
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 1px;
       background: linear-gradient(90deg, transparent, ${colors.gold}, transparent);
       opacity: 0.6;
     `;
-    pipCard.appendChild(border);
-    
-    // Event label
-    const label = doc.createElement('div');
-    const ev = events[current];
-    label.style.cssText = `
+      pipCard.appendChild(border);
+
+      // Event label
+      const label = doc.createElement('div');
+      const ev = events[current];
+      label.style.cssText = `
       font-family: 'Cormorant Garamond', serif;
       font-size: 10px;
       letter-spacing: 0.1em;
@@ -444,33 +509,33 @@
       min-width: 70px;
       font-weight: 600;
     `;
-    label.innerHTML = `<span style="display:block;color:${colors.gold};font-size:8px;letter-spacing:0.18em;margin-bottom:2px;font-weight:700;">${ev.badge}</span>${ev.name}`;
-    pipCard.appendChild(label);
-    
-    // Vertical line
-    const vline = doc.createElement('div');
-    vline.style.cssText = `width:1px;height:32px;background:${colors.borderColor};`;
-    pipCard.appendChild(vline);
-    
-    // Countdown
-    const countdown = doc.createElement('div');
-    countdown.style.cssText = `
+      label.innerHTML = `<span style="display:block;color:${colors.gold};font-size:8px;letter-spacing:0.18em;margin-bottom:2px;font-weight:700;">${ev.badge}</span>${ev.name}`;
+      pipCard.appendChild(label);
+
+      // Vertical line
+      const vline = doc.createElement('div');
+      vline.style.cssText = `width:1px;height:32px;background:${colors.borderColor};`;
+      pipCard.appendChild(vline);
+
+      // Countdown
+      const countdown = doc.createElement('div');
+      countdown.style.cssText = `
       display: flex;
       align-items: center;
       gap: 1px;
       font-family: 'Space Mono', monospace;
     `;
-    
-    const createUnit = (lbl) => {
-      const unit = doc.createElement('div');
-      unit.style.cssText = `
+
+      const createUnit = (lbl) => {
+        const unit = doc.createElement('div');
+        unit.style.cssText = `
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 2px;
       `;
-      const val = doc.createElement('div');
-      val.style.cssText = `
+        const val = doc.createElement('div');
+        val.style.cssText = `
         font-size: 18px;
         font-weight: 800;
         color: ${colors.text};
@@ -479,29 +544,29 @@
         min-width: 30px;
         text-align: center;
       `;
-      val.textContent = '00';
-      const valLbl = doc.createElement('div');
-      valLbl.style.cssText = `
+        val.textContent = '00';
+        const valLbl = doc.createElement('div');
+        valLbl.style.cssText = `
         font-size: 6px;
         letter-spacing: 0.15em;
         color: ${colors.muted};
         text-transform: uppercase;
         font-weight: 700;
       `;
-      valLbl.textContent = lbl;
-      unit.appendChild(val);
-      unit.appendChild(valLbl);
-      return { unit, val };
-    };
-    
-    const d = createUnit('ngày');
-    const h = createUnit('giờ');
-    const m = createUnit('phút');
-    const s = createUnit('giây');
-    
-    const sep = () => {
-      const el = doc.createElement('div');
-      el.style.cssText = `
+        valLbl.textContent = lbl;
+        unit.appendChild(val);
+        unit.appendChild(valLbl);
+        return { unit, val };
+      };
+
+      const d = createUnit('ngày');
+      const h = createUnit('giờ');
+      const m = createUnit('phút');
+      const s = createUnit('giây');
+
+      const sep = () => {
+        const el = doc.createElement('div');
+        el.style.cssText = `
         font-size: 14px;
         color: ${colors.muted};
         padding: 0 2px;
@@ -511,46 +576,49 @@
         font-weight: 700;
         font-weight: 700;
       `;
-      el.textContent = ':';
-      return el;
-    };
-    
-    countdown.appendChild(d.unit);
-    countdown.appendChild(sep());
-    countdown.appendChild(h.unit);
-    countdown.appendChild(sep());
-    countdown.appendChild(m.unit);
-    countdown.appendChild(sep());
-    countdown.appendChild(s.unit);
-    pipCard.appendChild(countdown);
-    
-    // Add animation
-    const style = doc.createElement('style');
-    style.textContent = `
+        el.textContent = ':';
+        return el;
+      };
+
+      countdown.appendChild(d.unit);
+      countdown.appendChild(sep());
+      countdown.appendChild(h.unit);
+      countdown.appendChild(sep());
+      countdown.appendChild(m.unit);
+      countdown.appendChild(sep());
+      countdown.appendChild(s.unit);
+      pipCard.appendChild(countdown);
+
+      // Add animation
+      const style = doc.createElement('style');
+      style.textContent = `
       @keyframes blink {
         0%, 100% { opacity: 0.35; }
         50% { opacity: 0.1; }
       }
     `;
-    doc.head.appendChild(style);
-    doc.body.appendChild(pipCard);
-    
-    // Update function
-    function refresh() {
-      const c = calc(events[current].target);
-      d.val.textContent = pad(c.d);
-      h.val.textContent = pad(c.h);
-      m.val.textContent = pad(c.m);
-      s.val.textContent = pad(c.s);
-    }
-    refresh();
-    setInterval(refresh, 1000);
-  }
-  
-  document.getElementById('pip-btn').addEventListener('click', openPiP);
+      doc.head.appendChild(style);
+      doc.body.appendChild(pipCard);
 
-  tick();
-  setInterval(tick, 1000);
-</script>
+      // Update function
+      function refresh() {
+        const ev = events[current];
+        const target = ev.isDynamic ? ev.getTarget() : ev.target;
+        const c = calc(target);
+        d.val.textContent = pad(c.d);
+        h.val.textContent = pad(c.h);
+        m.val.textContent = pad(c.m);
+        s.val.textContent = pad(c.s);
+      }
+      refresh();
+      setInterval(refresh, 1000);
+    }
+
+    document.getElementById('pip-btn').addEventListener('click', openPiP);
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
 </body>
+
 </html>
