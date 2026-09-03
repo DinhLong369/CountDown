@@ -26,13 +26,28 @@
     }
 
     [data-theme="tet"] {
-      --gold: #ecc26e;
-      --gold-light: #ffd700;
-      --bg: #e2dfda;
-      --surface: #8b3a3a;
-      --text: #b49745;
-      --muted: #d97070;
-      --border: rgba(200, 58, 58, 0.25);
+      --gold: #ffd700;
+      --gold-light: #ffe98a;
+      --bg: #2a0a0a;
+      --surface: #7a1f1f;
+      --text: #fff6e0;
+      --muted: #e8b98a;
+      --border: rgba(255, 215, 0, 0.3);
+    }
+
+    [data-theme="neon"] {
+      --gold: #00f0ff;
+      --gold-light: #ff2fd0;
+      --bg: #08040f;
+      --surface: #140a26;
+      --text: #eafcff;
+      --muted: #7d6fa8;
+      --border: rgba(0, 240, 255, 0.25);
+    }
+
+    html:not([data-theme]) body,
+    html[data-theme="dark-gold"] body {
+      background: radial-gradient(circle at 50% -10%, #241c0e 0%, var(--bg) 55%);
     }
 
     body {
@@ -45,6 +60,129 @@
       min-height: 100vh;
       gap: 14px;
       padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+      transition: background 0.4s ease;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(232, 201, 138, 0.1), transparent 45%),
+        radial-gradient(circle at 82% 80%, rgba(232, 201, 138, 0.07), transparent 45%),
+        radial-gradient(circle at 50% 100%, rgba(232, 201, 138, 0.05), transparent 60%);
+      animation: goldPulse 8s ease-in-out infinite;
+      transition: background 0.4s ease;
+    }
+
+    @keyframes goldPulse {
+
+      0%,
+      100% {
+        filter: brightness(1);
+      }
+
+      50% {
+        filter: brightness(1.2);
+      }
+    }
+
+    [data-theme="dark-gold"] .pip,
+    body:not([data-theme]) .pip {
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(232, 201, 138, 0.1), 0 0 24px rgba(232, 201, 138, 0.05);
+    }
+
+    [data-theme="dark-gold"] .pip:hover,
+    body:not([data-theme]) .pip:hover {
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(232, 201, 138, 0.15), 0 0 34px rgba(232, 201, 138, 0.12);
+    }
+
+    [data-theme="tet"] body::before {
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255, 215, 0, 0.18), transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(255, 90, 60, 0.16), transparent 50%),
+        radial-gradient(circle at 50% 100%, rgba(255, 215, 0, 0.08), transparent 60%);
+      animation: tetGlow 5s ease-in-out infinite;
+    }
+
+    @keyframes tetGlow {
+
+      0%,
+      100% {
+        filter: brightness(1) saturate(1);
+      }
+
+      50% {
+        filter: brightness(1.25) saturate(1.15);
+      }
+    }
+
+    [data-theme="tet"] .pip {
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 215, 0, 0.15), 0 0 30px rgba(255, 215, 0, 0.1);
+    }
+
+    [data-theme="tet"] .pip:hover {
+      box-shadow: 0 12px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 215, 0, 0.22), 0 0 45px rgba(255, 165, 60, 0.2);
+    }
+
+    [data-theme="tet"] .unit-value {
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+    }
+
+    [data-theme="tet"] .unit-value.tick {
+      text-shadow: 0 0 16px rgba(255, 165, 60, 0.8);
+    }
+
+    [data-theme="tet"] .event-label span {
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+    }
+
+    [data-theme="neon"] body::before {
+      background:
+        radial-gradient(circle at 15% 15%, rgba(0, 240, 255, 0.16), transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(255, 47, 208, 0.14), transparent 45%);
+      animation: neonPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes neonPulse {
+
+      0%,
+      100% {
+        filter: brightness(1);
+      }
+
+      50% {
+        filter: brightness(1.35);
+      }
+    }
+
+    [data-theme="neon"] .pip {
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.15), 0 0 60px rgba(255, 47, 208, 0.08), inset 0 1px 0 rgba(0, 240, 255, 0.1);
+    }
+
+    [data-theme="neon"] .pip:hover {
+      box-shadow: 0 0 40px rgba(0, 240, 255, 0.28), 0 0 80px rgba(255, 47, 208, 0.16), inset 0 1px 0 rgba(0, 240, 255, 0.15);
+    }
+
+    [data-theme="neon"] .unit-value {
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+    }
+
+    [data-theme="neon"] .unit-value.tick {
+      text-shadow: 0 0 16px rgba(255, 47, 208, 0.8);
+    }
+
+    [data-theme="neon"] .event-label span {
+      text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+    }
+
+    body>* {
+      position: relative;
+      z-index: 1;
     }
 
     /* ── Selector tabs ── */
@@ -110,6 +248,12 @@
       overflow: hidden;
       box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(200, 169, 110, 0.08);
       min-width: 540px;
+      transition: box-shadow 0.3s ease, transform 0.3s ease, background 0.4s ease, border-color 0.4s ease;
+    }
+
+    .pip:hover {
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(200, 169, 110, 0.12), 0 0 0 1px var(--border);
+      transform: translateY(-2px);
     }
 
     .pip::before {
@@ -121,6 +265,45 @@
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
       opacity: 0.6;
+    }
+
+    html:not([data-theme]) .pip {
+      position: relative;
+      isolation: isolate;
+    }
+
+    html:not([data-theme]) .pip::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      z-index: -1;
+      border-radius: 18px;
+      padding: 1px;
+      background: conic-gradient(from 0deg, transparent 0%, var(--gold) 12%, transparent 24%, transparent 76%, var(--gold-light) 88%, transparent 100%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: ringSpin 6s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes ringSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    html:not([data-theme]) .unit-value {
+      background: linear-gradient(180deg, var(--gold-light), var(--gold) 55%, #a8842f);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 8px rgba(232, 201, 138, 0.35));
+    }
+
+    html:not([data-theme]) .unit-value.tick {
+      filter: drop-shadow(0 0 14px rgba(247, 214, 132, 0.75));
     }
 
     .event-label {
@@ -261,10 +444,53 @@
     }
 
     [data-theme="tet"] .theme-btn.active {
-      color: #a85c00;
-      background: #fffbe8;
+      color: #ffd700;
+      background: rgba(255, 215, 0, 0.14);
       border-color: #ffd700;
-      text-shadow: 0 1px 2px #fff8, 0 0 2px #ffd70088;
+      text-shadow: 0 0 6px rgba(255, 215, 0, 0.6);
+    }
+
+    [data-theme="neon"] .theme-btn.active {
+      color: #00f0ff;
+      background: rgba(0, 240, 255, 0.12);
+      border-color: #00f0ff;
+      text-shadow: 0 0 6px rgba(0, 240, 255, 0.7);
+    }
+
+    @media (max-width: 640px) {
+      .pip {
+        min-width: 0;
+        width: 100%;
+        flex-direction: column;
+        gap: 16px;
+        padding: 22px 18px;
+      }
+
+      .vline {
+        width: 60%;
+        height: 1px;
+      }
+
+      .event-label {
+        min-width: 0;
+        text-align: center;
+      }
+
+      .unit-value {
+        font-size: 30px;
+        min-width: 44px;
+      }
+
+      .selector {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .tab,
+      .pip-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
@@ -274,6 +500,7 @@
   <div class="theme-selector">
     <button class="theme-btn active" data-theme="dark-gold">🌙 Dark Theme</button>
     <button class="theme-btn" data-theme="tet">🎆 Lunar New Year</button>
+    <button class="theme-btn" data-theme="neon">⚡ Neon Cyber</button>
   </div>
 
   <div class="selector">
@@ -285,7 +512,7 @@
 
   <div class="pip">
     <div class="event-label visible" id="label">
-      <span>2/9 • 2026</span>
+      <span id="label-badge">2/9</span>
       Quốc Khánh<br>Việt Nam
     </div>
     <div class="vline"></div>
@@ -323,9 +550,50 @@
       return end;
     }
 
+    // Ngày cố định hàng năm (vd 2/9) -> tự động nhảy sang năm sau khi đã qua
+    function getNextAnnualDate(month, day) {
+      const now = new Date();
+      let target = new Date(now.getFullYear(), month, day, 0, 0, 0);
+      if (target <= now) {
+        target = new Date(now.getFullYear() + 1, month, day, 0, 0, 0);
+      }
+      return target;
+    }
+
+    // Bảng ngày Tết Nguyên Đán (âm lịch không tính theo công thức cố định)
+    const lunarNewYearDates = {
+      2024: '2024-02-10', 2025: '2025-01-29', 2026: '2026-02-17',
+      2027: '2027-02-06', 2028: '2028-01-26', 2029: '2029-02-13',
+      2030: '2030-02-03', 2031: '2031-01-23', 2032: '2032-02-11',
+      2033: '2033-01-31', 2034: '2034-02-19', 2035: '2035-02-08'
+    };
+    const lunarNewYearNames = {
+      2024: 'Năm Giáp Thìn', 2025: 'Năm Ất Tỵ', 2026: 'Năm Bính Ngọ',
+      2027: 'Năm Đinh Mùi', 2028: 'Năm Mậu Thân', 2029: 'Năm Kỷ Dậu',
+      2030: 'Năm Canh Tuất', 2031: 'Năm Tân Hợi', 2032: 'Năm Nhâm Tý',
+      2033: 'Năm Quý Sửu', 2034: 'Năm Giáp Dần', 2035: 'Năm Ất Mão'
+    };
+    function getNextTet() {
+      const now = new Date();
+      const years = Object.keys(lunarNewYearDates).map(Number).sort((a, b) => a - b);
+      for (const y of years) {
+        const d = new Date(lunarNewYearDates[y] + 'T00:00:00');
+        if (d > now) return d;
+      }
+      // Hết bảng dữ liệu, trả về ngày cuối cùng đã biết
+      const lastYear = years[years.length - 1];
+      return new Date(lunarNewYearDates[lastYear] + 'T00:00:00');
+    }
+
     const events = [
-      { target: new Date('2026-09-02T00:00:00'), badge: '2/9 • 2026', name: 'Quốc Khánh<br>Việt Nam' },
-      { target: new Date('2027-02-17T00:00:00'), badge: 'TẾT • 2027', name: 'Năm Mùi<br>Lunar New Year' },
+      {
+        isDynamic: true, getTarget: () => getNextAnnualDate(8, 2),
+        badgeFn: (t) => `2/9 • ${t.getFullYear()}`, name: 'Quốc Khánh<br>Việt Nam'
+      },
+      {
+        isDynamic: true, getTarget: getNextTet,
+        badgeFn: (t) => `${lunarNewYearNames[t.getFullYear()] || 'TẾT'} • ${t.getFullYear()}`, name: 'Tết Nguyên Đán<br>Lunar New Year'
+      },
       { isDynamic: true, getTarget: getNextWorkEndTime, badge: 'HÔM NAY • 17:45', name: 'Time <br> Back Home' }
     ];
 
@@ -396,6 +664,10 @@
       }
     }
 
+    function badgeFor(ev, target) {
+      return ev.badgeFn ? ev.badgeFn(target) : ev.badge;
+    }
+
     function tick() {
       const ev = events[current];
       let target = ev.isDynamic ? ev.getTarget() : ev.target;
@@ -404,6 +676,11 @@
         c = { d: 0, h: 0, m: 0, s: 0 };
       } else {
         c = calc(target);
+        if (ev.badgeFn) {
+          const badgeSpan = labelEl.querySelector('span');
+          const newBadge = badgeFor(ev, target);
+          if (badgeSpan && badgeSpan.textContent !== newBadge) badgeSpan.textContent = newBadge;
+        }
       }
       updateUnit('cd', c.d); updateUnit('ch', c.h);
       updateUnit('cm', c.m); updateUnit('cs', c.s);
@@ -433,7 +710,8 @@
 
       setTimeout(() => {
         const ev = events[current];
-        labelEl.innerHTML = `<span>${ev.badge}</span>${ev.name}`;
+        const target = ev.isDynamic ? ev.getTarget() : ev.target;
+        labelEl.innerHTML = `<span>${badgeFor(ev, target)}</span>${ev.name}`;
         tick();
         requestAnimationFrame(() => {
           labelEl.classList.add('visible');
@@ -482,15 +760,26 @@
         shadowMain: 'rgba(0,0,0,0.6)'
       },
       'tet': {
-        bg: '#f9f4ed',
-        surface: '#8b3a3a',
-        text: '#fffbf0',
-        gold: '#e8c98a',
-        goldLight: '#ffd700',
-        muted: '#d97070',
-        borderColor: 'rgba(200,58,58,0.25)',
-        boxShadowInset: 'rgba(200,58,58,0.12)',
-        shadowMain: 'rgba(0,0,0,0.4)'
+        bg: '#2a0a0a',
+        surface: '#7a1f1f',
+        text: '#fff6e0',
+        gold: '#ffd700',
+        goldLight: '#ffe98a',
+        muted: '#e8b98a',
+        borderColor: 'rgba(255,215,0,0.3)',
+        boxShadowInset: 'rgba(255,215,0,0.15)',
+        shadowMain: 'rgba(0,0,0,0.5)'
+      },
+      'neon': {
+        bg: '#08040f',
+        surface: '#140a26',
+        text: '#eafcff',
+        gold: '#00f0ff',
+        goldLight: '#ff2fd0',
+        muted: '#7d6fa8',
+        borderColor: 'rgba(0,240,255,0.25)',
+        boxShadowInset: 'rgba(0,240,255,0.12)',
+        shadowMain: 'rgba(0,0,0,0.6)'
       }
     };
 
@@ -560,6 +849,8 @@
       // Event label
       const label = doc.createElement('div');
       const ev = events[current];
+      const evTarget = ev.isDynamic ? ev.getTarget() : ev.target;
+      const evBadge = badgeFor(ev, evTarget);
       label.style.cssText = `
       font-family: 'Cormorant Garamond', serif;
       font-size: 10px;
@@ -571,7 +862,7 @@
       min-width: 70px;
       font-weight: 600;
     `;
-      label.innerHTML = `<span style="display:block;color:${colors.gold};font-size:8px;letter-spacing:0.18em;margin-bottom:2px;font-weight:700;">${ev.badge}</span>${ev.name}`;
+      label.innerHTML = `<span style="display:block;color:${colors.gold};font-size:8px;letter-spacing:0.18em;margin-bottom:2px;font-weight:700;">${evBadge}</span>${ev.name}`;
       pipCard.appendChild(label);
 
       // Vertical line
@@ -677,6 +968,13 @@
     }
 
     document.getElementById('pip-btn').addEventListener('click', openPiP);
+
+    // Khởi tạo label ban đầu theo target động
+    (function initLabel() {
+      const ev = events[current];
+      const target = ev.isDynamic ? ev.getTarget() : ev.target;
+      labelEl.innerHTML = `<span>${badgeFor(ev, target)}</span>${ev.name}`;
+    })();
 
     tick();
     setInterval(tick, 1000);
